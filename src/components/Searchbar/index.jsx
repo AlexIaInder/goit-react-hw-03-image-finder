@@ -9,14 +9,14 @@ class Searchbar extends Component {
   };
 
   handelSearchChange = event => {
-    this.setState({ search: event.currentTarget.value.toLowerCase() });
+    this.setState({ search: event.target.value });
   };
   handelSubmit = event => {
     event.preventDefault();
     if (this.state.search.trim() === '') {
       return alert('Please enter something...');
     }
-    this.props.onSubmit(this.state.search);
+    this.props.onSubmit(this.state.search.toLowerCase());
     this.setState({ search: '' });
   };
 
@@ -33,8 +33,8 @@ class Searchbar extends Component {
           <input
             className={css.SearchFormInput}
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
             onChange={this.handelSearchChange}
             name="search"
