@@ -12,6 +12,6 @@ const Button = ({ onloadMore }) => {
 };
 
 Button.propTypes = {
-  loadMore: PropTypes.func,
+  onloadMore: PropTypes.func,
 };
 export default Button;

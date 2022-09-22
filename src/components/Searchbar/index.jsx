@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import css from './Searchbar.module.css';
 import { MdOutlineImageSearch } from 'react-icons/md';
+import PropTypes from 'prop-types';
 
 class Searchbar extends Component {
   handelSearchChange = event => {
@@ -47,6 +48,8 @@ class Searchbar extends Component {
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func,
+  search: PropTypes.string,
+  setSearch: PropTypes.func,
 };
 
 export default Searchbar;

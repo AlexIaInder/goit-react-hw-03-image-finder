@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { RevolvingDot } from 'react-loader-spinner';
 import css from './Loader.module.css';
+import PropTypes from 'prop-types';
 
 class Loader extends Component {
   render() {
@@ -21,5 +22,7 @@ class Loader extends Component {
     );
   }
 }
-
+Loader.propTypes = {
+  visible: PropTypes.bool,
+};
 export default Loader;

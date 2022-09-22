@@ -12,6 +12,7 @@ export class App extends Component {
     images: [],
     isLoading: false,
     largeImageURL: '',
+    largeImageURLAlt: '',
     showModal: false,
   };
 
@@ -45,7 +46,14 @@ export class App extends Component {
   };
 
   render() {
-    const { images, search, isLoading, showModal, largeImageURL } = this.state;
+    const {
+      images,
+      search,
+      isLoading,
+      showModal,
+      largeImageURL,
+      largeImageURLAlt,
+    } = this.state;
 
     return (
       <>
@@ -56,19 +64,26 @@ export class App extends Component {
         />
         <ImageGallery
           images={this.state.images}
-          setModalImage={src =>
-            this.setState({ largeImageURL: src, showModal: true })
+          setModalImage={(src, alt) =>
+            this.setState({
+              largeImageURL: src,
+              showModal: true,
+              largeImageURLAlt: alt,
+            })
           }
         />
         {images.length > 0 && (
           <Button onloadMore={this.onloadMore} page={this.state.page} />
         )}
         {isLoading && <Loader />}
-        <Modal
-          show={showModal}
-          onClose={() => this.setState({ showModal: false })}
-          src={largeImageURL}
-        />
+        {showModal && (
+          <Modal
+            show={showModal}
+            onClose={() => this.setState({ showModal: false })}
+            src={largeImageURL}
+            alt={largeImageURLAlt}
+          />
+        )}
       </>
     );
   }

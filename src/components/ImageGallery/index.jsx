@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import css from './ImageGallery.module.css';
 import ImageGalleryItem from './ImageGalleryItem';
+import PropTypes from 'prop-types';
 
 class ImageGallery extends Component {
   render() {
@@ -10,7 +11,7 @@ class ImageGallery extends Component {
       <ul className={css.ImageGallery}>
         {images.map(image => (
           <ImageGalleryItem
-            onClick={() => setModalImage(image.largeImageURL)}
+            onClick={() => setModalImage(image.largeImageURL, image.user)}
             key={image.id}
             src={image.webformatURL}
             alt={image.user}
@@ -20,5 +21,15 @@ class ImageGallery extends Component {
     );
   }
 }
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      webformatURL: PropTypes.string,
+      user: PropTypes.string,
+    })
+  ),
+  setModalImage: PropTypes.string,
+};
 
 export default ImageGallery;
