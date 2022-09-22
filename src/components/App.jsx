@@ -3,34 +3,72 @@ import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import { fetchImages } from './services/api';
 import Button from './Button';
+import Loader from './Loader';
+import Modal from './Modal';
 export class App extends Component {
   state = {
     search: '',
     page: 1,
     images: [],
+    isLoading: false,
+    largeImageURL: '',
+    showModal: false,
   };
-  componentDidUpdate(_, prevState) {
-    const { search, page } = this.state;
-    if (prevState.search !== search || prevState.page !== page) {
-      this.onSubmit();
-    }
-  }
 
-  onSubmit = async q => {
-    const data = await fetchImages({ q, page: this.state.page });
-    this.setState({ ...this.state, images: data.hits });
+  onSubmit = async (q, page) => {
+    this.setState({ isLoading: true });
+    const data = await fetchImages({ q, page });
+    const images =
+      page === 1 ? data.hits : [...this.state.images, ...data.hits];
+
+    if (page === 1) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+
+    this.setState({
+      ...this.state,
+      page,
+      images,
+      isLoading: false,
+    });
   };
 
   onloadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+    const { search, page } = this.state;
+    const newPage = page + 1;
+
+    this.setState({ page: newPage });
+    this.onSubmit(search, newPage);
   };
 
   render() {
+    const { images, search, isLoading, showModal, largeImageURL } = this.state;
+
     return (
       <>
-        <Searchbar onSubmit={this.onSubmit} />
-        <ImageGallery images={this.state.images} />
-        <Button onloadMore={this.onloadMore} page={this.state.page} />
+        <Searchbar
+          onSubmit={this.onSubmit}
+          search={search}
+          setSearch={newSearch => this.setState({ search: newSearch })}
+        />
+        <ImageGallery
+          images={this.state.images}
+          setModalImage={src =>
+            this.setState({ largeImageURL: src, showModal: true })
+          }
+        />
+        {images.length > 0 && (
+          <Button onloadMore={this.onloadMore} page={this.state.page} />
+        )}
+        {isLoading && <Loader />}
+        <Modal
+          show={showModal}
+          onClose={() => this.setState({ showModal: false })}
+          src={largeImageURL}
+        />
       </>
     );
   }

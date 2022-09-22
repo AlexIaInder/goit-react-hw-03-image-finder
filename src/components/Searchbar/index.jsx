@@ -4,20 +4,19 @@ import css from './Searchbar.module.css';
 import { MdOutlineImageSearch } from 'react-icons/md';
 
 class Searchbar extends Component {
-  state = {
-    search: '',
-  };
-
   handelSearchChange = event => {
-    this.setState({ search: event.target.value });
+    this.props.setSearch(event.target.value);
   };
   handelSubmit = event => {
     event.preventDefault();
-    if (this.state.search.trim() === '') {
+
+    const { search } = this.props;
+
+    if (search.trim() === '') {
       return alert('Please enter something...');
     }
-    this.props.onSubmit(this.state.search.toLowerCase());
-    this.setState({ search: '' });
+
+    this.props.onSubmit(search.toLowerCase(), 1);
   };
 
   render() {
@@ -38,7 +37,7 @@ class Searchbar extends Component {
             placeholder="Search images and photos"
             onChange={this.handelSearchChange}
             name="search"
-            value={this.state.search}
+            value={this.props.search}
           />
         </form>
       </header>

@@ -4,10 +4,13 @@ import ImageGalleryItem from './ImageGalleryItem';
 
 class ImageGallery extends Component {
   render() {
+    const { images, setModalImage } = this.props;
+
     return (
       <ul className={css.ImageGallery}>
-        {this.props.images.map(image => (
+        {images.map(image => (
           <ImageGalleryItem
+            onClick={() => setModalImage(image.largeImageURL)}
             key={image.id}
             src={image.webformatURL}
             alt={image.user}
